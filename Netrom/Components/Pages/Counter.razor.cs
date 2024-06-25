@@ -9,6 +9,8 @@ namespace Netrom.Components.Pages
         private void IncrementCount()
         {
             currentCount++;
+
         }
+       
     }
 }

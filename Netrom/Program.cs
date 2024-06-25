@@ -1,10 +1,22 @@
-using Netrom.Components;
 
+using Netrom.Components;
+using Blazorise;
+using Blazorise.Icons.FontAwesome;
+using Blazorise.Bootstrap;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+
+builder.Services
+    .AddBlazorise(options =>
+    {
+        options.Immediate = true;
+    })
+    .AddBootstrapProviders()
+    .AddFontAwesomeIcons();
 
 var app = builder.Build();
 
