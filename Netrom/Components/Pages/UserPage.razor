@@ -1,0 +1,13 @@
+@page "/users"
+
+<h3>Users</h3>
+
+<DataGrid TItem = "User"
+          Data = "@Users"
+          Filterable
+          FilterMethod="DataGridFilterMethod.StartsWith"
+          Responsive>
+    
+    <DataGridColumn TItem="User" Field="FirstName" Caption="FirstName"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="LastName" Caption="LastName"></DataGridColumn>
+</DataGrid>
