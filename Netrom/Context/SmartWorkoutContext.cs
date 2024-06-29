@@ -18,7 +18,6 @@ namespace Blazornetrom.Context
         public DbSet<Workout> Workouts { get; set; }
 
         public DbSet<ExerciseLog> ExercisesLogs { get; set; }
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Workout>()
