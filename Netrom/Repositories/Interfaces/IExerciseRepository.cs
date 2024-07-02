@@ -5,4 +5,5 @@ namespace Netrom.Repositories.Interfaces;
 public interface IExerciseRepository
 {
     ICollection<Exercises> getExercises();
+    Task AddAsync2(Exercises exercise);
 }

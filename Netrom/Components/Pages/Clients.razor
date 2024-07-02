@@ -1,0 +1,33 @@
+@page "/clients"
+@using Netrom.Repositories.Interfaces
+
+<h2>Clients</h2>
+
+<Button Color="Color.Dark" Size="Size.Medium">
+    <NavLink class="butonAddUser" href="addUser" >Add User</NavLink>
+</Button>
+<DataGrid TItem = "User"
+          Data = "@Users"
+          Filterable
+          FilterMethod="DataGridFilterMethod.StartsWith"
+          Responsive>
+
+    <DataGridColumn TItem="User" Field="FirstName" Caption="FirstName"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="LastName" Caption="LastName"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="Birthday" Caption="Birthday"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="Gender" Caption="Gender"></DataGridColumn>
+    <DataGridColumn TItem="User" Field="Gender" Caption="Gender"></DataGridColumn>
+</DataGrid>
+
+@code {
+    [Inject]
+    public IUserRepository UserRepository { get; set; }
+
+    public List<User> Users;
+        
+    protected override void OnInitialized()
+    {
+            
+        Users = UserRepository.getUsers().ToList();
+    }
+}

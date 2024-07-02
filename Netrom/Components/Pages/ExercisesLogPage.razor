@@ -1,0 +1,16 @@
+@using Blazornetrom.Entites
+@page "/exercisesLog"
+<h3>ExercisesLogPage</h3>
+
+<DataGrid TItem = "ExerciseLog"
+          Data = "@ExerciseLogList"
+          Filterable
+          FilterMethod="DataGridFilterMethod.StartsWith"
+          Responsive>
+    
+    <DataGridColumn TItem="ExerciseLog" Field="Reps" Caption="Reps"></DataGridColumn>
+    <DataGridColumn TItem="ExerciseLog" Field="Duration" Caption="Duration"></DataGridColumn>
+    <DataGridColumn TItem="ExerciseLog" Field="ExerciseId" Caption="ExerciseId"></DataGridColumn>
+    <DataGridColumn TItem="ExerciseLog" Field="WorkoutId" Caption="WorkoutId"></DataGridColumn>
+    <DataGridColumn TItem="ExerciseLog" Field="Exercises.Description" Caption="Exercise Name"></DataGridColumn>
+</DataGrid>

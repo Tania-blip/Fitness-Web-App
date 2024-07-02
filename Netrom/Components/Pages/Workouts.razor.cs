@@ -4,16 +4,14 @@ using Netrom.Repositories.Interfaces;
 
 namespace Netrom.Components.Pages;
 
-public partial class UserPage : ComponentBase
+public partial class Workouts : ComponentBase
 {
     [Inject]
-    public IUserRepository UserRepository { get; set; }
-
-    public List<User> Users;
-        
+    public IWorkoutRepository WorkoutRepository { get; set; }
+    public List<Workout> Workout;
     protected override void OnInitialized()
     {
-            
-        Users = UserRepository.getUsers().ToList();
+
+        Workout = WorkoutRepository.getWorkouts().ToList();
     }
 }

@@ -17,4 +17,10 @@ public class ExerciseRepository : IExerciseRepository
         var exercises = _context.Exercises.ToList();
         return exercises;
     }
+    
+    public async Task AddAsync2(Exercises exercise)
+    {
+        _context.Exercises.Add(exercise);
+        await _context.SaveChangesAsync();
+    }
 }

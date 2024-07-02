@@ -1,0 +1,19 @@
+@page "/exercises"
+@using Netrom.Repositories.Interfaces
+
+<h3>Exercises</h3>
+
+<Button Color="Color.Dark" Size="Size.Medium">
+    <NavLink class="butonAddExercise" href="addExercise">Add Exercise</NavLink>
+</Button>
+
+<DataGrid TItem = "Exercises"
+          Data = "ExercisesList"
+          Filterable
+          FilterMethod="DataGridFilterMethod.StartsWith"
+          Responsive>
+    
+    <DataGridColumn TItem="Exercises" Field="Description" Caption="Description"></DataGridColumn>
+    <DataGridColumn TItem="Exercises" Field="Type" Caption="Type"></DataGridColumn>
+    
+</DataGrid>

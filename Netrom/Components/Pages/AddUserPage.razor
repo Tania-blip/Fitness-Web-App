@@ -1,0 +1,39 @@
+@page "/addUser"
+@inject NavigationManager Navigation
+@using Netrom.Components.Models
+@using Netrom.Entities
+
+
+<h3>AddOrEdit</h3>
+
+<EditForm Model="@User" OnValidSubmit="@SaveUser" FormName="AdduserForm">
+    <div class="form-group">
+        <label>First Name :</label>
+        <div>
+            <InputText @bind-Value="User.FirstName" class="form-control col-sm-3" />
+            <ValidationMessage For="@(() => User.FirstName)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Last Name :</label>
+        <div>
+            <InputText @bind-Value="User.LastName" class="form-control col-sm-3" />
+            <ValidationMessage For="@(() => User.LastName)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Gender :</label>
+        <div>
+            <InputText @bind-Value="User.Gender" class="form-control col-sm-3" />
+            <ValidationMessage For="@(() => User.Gender)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Birthday :</label>
+        <div>
+            <InputDate @bind-Value="User.Birthday" class="form-control col-sm-3" />
+            <ValidationMessage For="@(() => User.Birthday)" />
+        </div>
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>

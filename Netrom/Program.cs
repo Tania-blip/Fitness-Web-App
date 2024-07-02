@@ -23,6 +23,7 @@ builder.Services
     })
     .AddBootstrapProviders()
     .AddFontAwesomeIcons();
+    
 
 builder.Services.AddDbContext<SmartWorkoutContext>(options =>
 {

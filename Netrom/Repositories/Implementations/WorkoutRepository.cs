@@ -1,4 +1,5 @@
 using Blazornetrom.Context;
+using Microsoft.EntityFrameworkCore;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
 
@@ -15,7 +16,7 @@ public class WorkoutRepository : IWorkoutRepository
     }
     public ICollection<Workout> getWorkouts()
     {
-        var workouts = _context.Workouts.ToList();
+        var workouts = _context.Workouts.Include(x=>x.User).ToList();
         return workouts;
     }
     

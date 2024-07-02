@@ -18,4 +18,10 @@ public class UserRepository : IUserRepository
         var users = _context.Users.ToList();
         return users;
     }
+
+    public async Task AddAsync(User user)
+    {
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+    }
 }
