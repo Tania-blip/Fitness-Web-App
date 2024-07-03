@@ -1,5 +1,5 @@
+using Blazorise.DataGrid;
 using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Netrom.Components.Models;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
@@ -12,12 +12,32 @@ public partial class AddUserPage : ComponentBase
     public IUserRepository UserRepository { get; set; }
     
     [SupplyParameterFromForm]
-    public User User { get; set; } = new User();
+    public UserDto UserDto { get; set; } = new UserDto();
     
+    [Parameter]
+    public int? UserId { get; set; }
+
+    private bool isEdit = false;
+    protected override void OnParametersSet()
+    {
+        if (UserId != null)
+        {
+            isEdit = true;
+            UserDto = UserRepository.getUserById(UserId);
+        }
+    }
     public async Task SaveUser()
     {
-        await UserRepository.AddAsync(User);
-        Navigation.NavigateTo("/clients");
+        if (isEdit)
+        {
+            UserRepository.UpdateUser(UserId, UserDto);
+        }
+        else
+        {
+            await UserRepository.AddAsync(UserDto);
+        }
+
+        Navigation.NavigateTo("/users");
     }
-   
+    
 }

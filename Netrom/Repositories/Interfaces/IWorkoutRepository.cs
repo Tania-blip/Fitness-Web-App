@@ -5,4 +5,6 @@ namespace Netrom.Repositories.Interfaces;
 public interface IWorkoutRepository
 {
     ICollection<Workout> getWorkouts();
+    
+    Task AddAsync(Workout workout);
 }

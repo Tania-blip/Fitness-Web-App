@@ -1,39 +1,49 @@
-@page "/addUser"
+@page "/user/add"
+@page "/user/edit/{UserId:int}"
+
 @inject NavigationManager Navigation
 @using Netrom.Components.Models
 @using Netrom.Entities
 
-
+@rendermode InteractiveServer
 <h3>AddOrEdit</h3>
+    <EditForm
+        Model="@UserDto"
+        OnValidSubmit="@SaveUser"
+        FormName="AdduserForm">
+        <DataAnnotationsValidator/>
+        <div class="form-group">
+            <label>First Name :</label>
+            <div>
+                <InputText @bind-Value="UserDto.FirstName" class="form-control col-sm-3"/>
+                <ValidationMessage For="@(() => UserDto.FirstName)"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Last Name :</label>
+            <div>
+                <InputText @bind-Value="UserDto.LastName" class="form-control col-sm-3"/>
+                <ValidationMessage For="@(() => UserDto.LastName)"/>
+            </div>
+        </div>
 
-<EditForm Model="@User" OnValidSubmit="@SaveUser" FormName="AdduserForm">
-    <div class="form-group">
-        <label>First Name :</label>
-        <div>
-            <InputText @bind-Value="User.FirstName" class="form-control col-sm-3" />
-            <ValidationMessage For="@(() => User.FirstName)" />
+        <div class="form-group">
+            <label> Select your gender: </label>
+            <InputSelect @bind-Value="@UserDto.Gender">
+
+                @foreach (var gender in Enum.GetValues(typeof(Gender)))
+                {
+                    <option value="@gender">@gender</option>
+                }
+            </InputSelect>
+            <ValidationMessage For="@(() => UserDto.Gender)"/>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Last Name :</label>
-        <div>
-            <InputText @bind-Value="User.LastName" class="form-control col-sm-3" />
-            <ValidationMessage For="@(() => User.LastName)" />
+        <div class="form-group">
+            <label>Birthday :</label>
+            <div>
+                <InputDate @bind-Value="UserDto.Birthday" class="form-control col-sm-3"/>
+                <ValidationMessage For="@(() => UserDto.Birthday)"/>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label>Gender :</label>
-        <div>
-            <InputText @bind-Value="User.Gender" class="form-control col-sm-3" />
-            <ValidationMessage For="@(() => User.Gender)" />
-        </div>
-    </div>
-    <div class="form-group">
-        <label>Birthday :</label>
-        <div>
-            <InputDate @bind-Value="User.Birthday" class="form-control col-sm-3" />
-            <ValidationMessage For="@(() => User.Birthday)" />
-        </div>
-    </div>
-    <button type="submit">Submit</button>
-</EditForm>
+        <button type="submit">Submit</button>
+    </EditForm>

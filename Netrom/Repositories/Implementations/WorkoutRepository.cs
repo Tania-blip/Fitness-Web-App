@@ -1,5 +1,6 @@
 using Blazornetrom.Context;
 using Microsoft.EntityFrameworkCore;
+using Netrom.Components.Pages;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
 
@@ -18,6 +19,12 @@ public class WorkoutRepository : IWorkoutRepository
     {
         var workouts = _context.Workouts.Include(x=>x.User).ToList();
         return workouts;
+    }
+    
+    public async Task AddAsync(Workout workout)
+    {
+        _context.Workouts.Add(workout);
+        await _context.SaveChangesAsync();
     }
     
 }

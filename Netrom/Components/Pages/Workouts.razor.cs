@@ -11,7 +11,7 @@ public partial class Workouts : ComponentBase
     public List<Workout> Workout;
     protected override void OnInitialized()
     {
-
+        
         Workout = WorkoutRepository.getWorkouts().ToList();
     }
 }

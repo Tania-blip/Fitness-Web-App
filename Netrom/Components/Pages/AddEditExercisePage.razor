@@ -1,0 +1,29 @@
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Netrom.Entities
+@using Netrom.Repositories.Interfaces
+@page "/exercise/add"
+
+<h3>AddOrEdit Exercise</h3>
+
+<EditForm Model="@Exercise" OnValidSubmit=@SaveExercise FormName="editForm">
+    <InputNumber @bind-Value="Exercise.Id" hidden></InputNumber>
+    <div class="form-group">
+        <label>Description :</label>
+        <div>
+            <InputText @bind-Value="Exercise.Description" class="form-control col-sm-3"/>
+            <ValidationMessage For="@(() => Exercise.Description)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Type :</label>
+        <div>
+            <InputText @bind-Value="Exercise.Type" class="form-control col-sm-3"/>
+            <ValidationMessage For="@(() => Exercise.Type)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Save"/>
+    </div>
+</EditForm>  
+
+
