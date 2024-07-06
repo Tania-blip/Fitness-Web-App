@@ -1,9 +1,12 @@
 using System.ComponentModel.DataAnnotations;
+using Netrom.Entities;
 
 namespace Netrom.Components.Models;
 
 public class UserDto
 {
+    public int Id { get; set; }
+    
     [Required(ErrorMessage = "First name is required")]
     public string FirstName { get; set; }
     

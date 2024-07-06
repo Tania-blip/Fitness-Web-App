@@ -19,4 +19,10 @@ public class ExerciseLogRepository : IExerciseLogRepository
         
         return exerciseLogs;
     }
+    
+    public async Task Add(ExerciseLog exerciseLog)
+    {
+        _context.ExercisesLogs.Add(exerciseLog);
+        await _context.SaveChangesAsync();
+    }
 }

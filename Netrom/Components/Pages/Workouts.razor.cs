@@ -1,4 +1,8 @@
+using Blazorise.DataGrid;
+using Blazornetrom.Entites;
 using Microsoft.AspNetCore.Components;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Netrom.Components.Models;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
 
@@ -13,5 +17,14 @@ public partial class Workouts : ComponentBase
     {
         
         Workout = WorkoutRepository.getWorkouts().ToList();
+    }
+    
+    [Inject]
+    public NavigationManager Navigation { get; set; }
+    
+    public void AddExerciseLog(EditCommandContext<Workout> context)
+    {
+        Navigation.NavigateTo($"/exerciseLog/add/{context.Item.Id}");
+        
     }
 }

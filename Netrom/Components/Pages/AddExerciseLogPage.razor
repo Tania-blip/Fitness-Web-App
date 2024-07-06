@@ -1,0 +1,37 @@
+@page "/exerciseLog/add/{workoutId:int}"
+
+<h3>AddExerciseLogPage</h3>
+
+<EditForm
+    Model="@ExerciseLog"
+    OnValidSubmit="@SaveExerciseLog"
+    FormName="AdduserForm">
+    <DataAnnotationsValidator/>
+    <InputNumber @bind-Value="ExerciseLog.Id" hidden></InputNumber>
+    <div class="form-group">
+        <label>Reps :</label>
+        <div>
+            <InputNumber @bind-Value="ExerciseLog.Reps" class="form-control col-sm-3"/>
+            <ValidationMessage For="@(() => ExerciseLog.Reps)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Duration :</label>
+        <div>
+            <InputNumber @bind-Value="ExerciseLog.Duration" class="form-control col-sm-3"/>
+            <ValidationMessage For="@(() => ExerciseLog.Duration)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label> Select the exercise: </label>
+        <InputSelect @bind-Value="@ExerciseLog.ExerciseId">
+
+            @foreach (var exercise in ExercisesList)
+            {
+            <option value="@exercise.Id">@exercise.Description</option>
+            }
+        </InputSelect>
+        
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>

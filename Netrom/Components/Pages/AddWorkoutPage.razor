@@ -1,12 +1,17 @@
-@page "/addWorkout"
+
+@page "/addWorkout/{userId:int}"
+@page "/workout/edit/{userId:int}"
+@using Netrom.Components.Models
 @inject NavigationManager Navigation
-<h3>AddWorkoutPage</h3>
 
+<h3>Adding workout for @UserToShow.FirstName @UserToShow.LastName</h3>
 
+@rendermode InteractiveServer
 <EditForm
     Model="@Workout"
     OnValidSubmit="@SaveWorkout"
     FormName="AdduserForm">
+    <DataAnnotationsValidator/>
     <InputNumber @bind-Value="Workout.Id" hidden></InputNumber>
     <div class="form-group">
         <label>Workout Name :</label>
@@ -22,13 +27,5 @@
             <ValidationMessage For="@(() => Workout.Date)"/>
         </div>
     </div>
-    @* <div class="form-group"> *@
-    @*     <label>Gender :</label> *@
-    @*     <div> *@
-    @*         <InputText @bind-Value="Workout.User.FirstName" class="form-control col-sm-3" /> *@
-    @*         <ValidationMessage For="@(() => Workout.User.FirstName)" /> *@
-    @*     </div> *@
-    @* </div> *@
-
     <button type="submit">Submit</button>
 </EditForm>

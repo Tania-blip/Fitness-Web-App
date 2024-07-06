@@ -1,5 +1,6 @@
 using Blazornetrom.Context;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Netrom.Components.Models;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
@@ -14,10 +15,11 @@ public class UserRepository : IUserRepository
     {
         _context = context;
     }
-    public ICollection<User> getUsers()
+    public ICollection<UserDto> getUsers()
     {
-        var users = _context.Users.ToList();
-        return users;
+        // var users = _context.Users.ToList();
+        // return users;
+        return _context.Users.Select(u => UserMapper.ToUserDto(u)).ToList();
     }
 
     public async Task AddAsync(UserDto userDto)
@@ -59,7 +61,6 @@ public class UserRepository : IUserRepository
         return user;
     }
     
-    public UserManager<User> UserManager;
     public UserDto getUserById(int? Id)
     {
         var user = _context.Users.FirstOrDefault(u => u.Id == Id);
@@ -76,6 +77,33 @@ public class UserRepository : IUserRepository
         userDto.Gender = user.Gender;
         
         return userDto;
+    }
+    
+    public void DeleteUser(int id)
+    {
+        var existingUser = _context.Users.Find(id);
+        if (existingUser != null)
+        {
+            _context.Users.Remove(existingUser);
+            _context.SaveChanges();
+        }
+    }
+    
+    public async Task<(IEnumerable<UserDto> Users, int TotalCount)> GetUsersAsync(int pageIndex, int pageSize)
+    {
+        var query = _context.Users.AsQueryable();
+        var totalCount = await query.CountAsync();
+        var users = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        var userDtos = users.Select(user => new UserDto
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Birthday = user.Birthday,
+            Gender = user.Gender
+        }).ToList();
+
+        return (userDtos, totalCount);
     }
 
 }

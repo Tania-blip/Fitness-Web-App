@@ -2,6 +2,7 @@
 
 using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Components;
+using Netrom.Components.Models;
 using Netrom.Entities;
 using Netrom.Repositories.Implementations;
 using Netrom.Repositories.Interfaces;
@@ -14,14 +15,36 @@ namespace Netrom.Components.Pages
         [Inject] public IExerciseRepository exerciseRepository { get; set; }
 
         [SupplyParameterFromForm]
-        public Exercises Exercise { get; set; } = new Exercises();
+        public ExerciseDto ExerciseDto { get; set; } = new ExerciseDto();
         [Inject]
         public NavigationManager Navigation { get; set; }
-        public void SaveExercise()
+        
+        [Parameter]
+        public int? ExerciseId { get; set; }
+
+        private bool isEdit = false;
+        public async Task SaveExercise()
         {
-            exerciseRepository.Add(Exercise);
+            if (isEdit)
+            {
+                exerciseRepository.UpdateExercise(ExerciseId, ExerciseDto);
+            }
+            else
+            {
+                await exerciseRepository.Add(ExerciseDto);
+            }
+            
             Navigation.NavigateTo("/exercises");
             
+        }
+        
+        protected override void OnParametersSet()
+        {
+            if (ExerciseId != null)
+            {
+                isEdit = true;
+                ExerciseDto = exerciseRepository.getExerciseById(ExerciseId);
+            }
         }
     }
 }

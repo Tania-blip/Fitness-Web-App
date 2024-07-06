@@ -1,21 +1,34 @@
 @page "/exercises"
+@using Netrom.Components.Models
 @using Netrom.Repositories.Interfaces
 
 <h3>Exercises</h3>
 
-<Button Color="Color.Dark" Size="Size.Medium">
-    <NavLink class="butonAddExercise" href="exercise/add">Add Exercise</NavLink>
-</Button>
+@* <Button Color="Color.Dark" Size="Size.Medium"> *@
+@*     <NavLink class="butonAddExercise" href="exercise/add">Add Exercise</NavLink> *@
+@* </Button> *@
 
-<DataGrid TItem = "Exercises"
+<DataGrid TItem = "ExerciseDto"
           Data = "ExercisesList"
+          Editable
           Filterable
           FilterMethod="DataGridFilterMethod.StartsWith"
           Responsive>
     
-    <DataGridColumn TItem="Exercises" Field="Description" Caption="Description"></DataGridColumn>
-    <DataGridColumn TItem="Exercises" Field="Type" Caption="Type"></DataGridColumn>
-    
+    <DataGridColumn TItem="ExerciseDto" Field="Description" Caption="Description"></DataGridColumn>
+    <DataGridColumn TItem="ExerciseDto" Field="Type" Caption="Type"></DataGridColumn>
+    <DataGridCommandColumn TItem="ExerciseDto">
+        <EditCommandTemplate>
+            <Button Color="Color.Danger" Clicked="() => EditExercise(context)">
+                Edit
+            </Button>
+        </EditCommandTemplate>
+        <DeleteCommandTemplate>
+            <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(context)">Delete</Button>
+        </DeleteCommandTemplate>
+    </DataGridCommandColumn>
 </DataGrid>
+
+<DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed" />
 
 

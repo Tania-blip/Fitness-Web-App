@@ -2,6 +2,11 @@
 @page "/exercisesLog"
 <h3>ExercisesLogPage</h3>
 
+
+<Button Color="Color.Dark" Size="Size.Medium">
+    <NavLink class="butonAddUser" href="/exerciseLog/add" >Add Exercise Log</NavLink>
+</Button>
+
 <DataGrid TItem = "ExerciseLog"
           Data = "@ExerciseLogList"
           Filterable

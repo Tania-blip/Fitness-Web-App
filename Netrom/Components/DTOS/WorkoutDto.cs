@@ -6,14 +6,15 @@ namespace Netrom.Components.Models;
 
 public class WorkoutDto
 {
-    [Required]
+    [Required(ErrorMessage = "Name is required")]
     public string Name { get; set; }
     
-    [Required]
+    [Required(ErrorMessage = "Date is required")]
     public DateTime Date { get; set; }
     
     public int UserId { get; set; }
     
+    [Required(ErrorMessage = "User is required")]
     public User User { get; set; }
 
     public ICollection<ExerciseLog> ExercisesLogs;

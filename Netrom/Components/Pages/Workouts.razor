@@ -4,29 +4,21 @@
 <h3>Workouts</h3>
 
 <Button Color="Color.Dark" Size="Size.Medium">
-    <NavLink class="butonAddWorkout" href="addWorkout" >Add Workout</NavLink>
+    <NavLink class="butonAddWorkout" href="/addWorkout" >Add Workout</NavLink>
 </Button>
 
 <DataGrid TItem = "Workout"
           Data = "@Workout"
           Filterable
+          Editable
           FilterMethod="DataGridFilterMethod.StartsWith"
           Responsive>
 
     <DataGridColumn TItem="Workout" Field="Name" Caption="Name"></DataGridColumn>
     <DataGridColumn TItem="Workout" Field="Date" Caption="Date"></DataGridColumn>
-    <DataGridColumn TItem="Workout" Field="UserId" Caption="UserId"></DataGridColumn>
-    <DataGridColumn TItem="Workout" Field="User.FirstName" Caption="User Name">
-        @* <DisplayTemplate> *@
-        @*     @{ *@
-        @*     var date = (context as Workout)?.User; *@
-        @* *@
-        @*     if (date != null) *@
-        @*     { *@
-        @*     @($"{date.FirstName} {date.LastName}") *@
-        @*     } *@
-        @*     } *@
-        @* </DisplayTemplate> *@
-    </DataGridColumn>
-   
+    <DataGridCommandColumn NewCommandAllowed="true" TItem="Workout">
+        <EditCommandTemplate>
+            <Button Color="Color.Primary" Clicked="() => AddExerciseLog(context)">Add Exercise Log</Button>
+        </EditCommandTemplate>
+    </DataGridCommandColumn>
 </DataGrid>

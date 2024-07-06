@@ -18,6 +18,7 @@ public partial class AddUserPage : ComponentBase
     public int? UserId { get; set; }
 
     private bool isEdit = false;
+    
     protected override void OnParametersSet()
     {
         if (UserId != null)
@@ -36,7 +37,7 @@ public partial class AddUserPage : ComponentBase
         {
             await UserRepository.AddAsync(UserDto);
         }
-
+        
         Navigation.NavigateTo("/users");
     }
     

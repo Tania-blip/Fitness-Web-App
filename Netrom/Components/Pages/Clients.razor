@@ -1,5 +1,5 @@
 @page "/users"
-@using Netrom.Repositories.Interfaces
+@using Netrom.Components.Models
 
 <h2>Clients</h2>
 
@@ -7,51 +7,70 @@
     <NavLink class="butonAddUser" href="/user/add" >Add User</NavLink>
 </Button>
 
-<DataGrid TItem="User"
-          Data="@Users" 
-          Filterable
-          FilterMethod="DataGridFilterMethod.StartsWith"
-          Responsive
-          Editable
-          AllowFiltering="true"
-          AllowPaging="true"
-          PageSize="5"
-          AllowSorting="true">
->
-    <DataGridColumn TItem="User" Field="FirstName" Caption="First Name"></DataGridColumn>
-    <DataGridColumn TItem="User" Field="LastName" Caption="Last Name"></DataGridColumn>
-    <DataGridColumn TItem="User" Field="Birthday" DisplayFormat="{0:MM/dd/yyyy}" Caption="Birthday"></DataGridColumn>
-    <DataGridColumn TItem="User" Field="Gender" Caption="Gender"></DataGridColumn>
-    <DataGridCommandColumn TItem="User">
-        <EditCommandTemplate>
-            <Button Color="Color.Dark" Clicked="() => EditUser(context)">
-                <NavLink class="butonEdit" href="@($"/user/edit/{context.Item.Id}")">Edit</NavLink>
-            </Button>
-        </EditCommandTemplate>
-    </DataGridCommandColumn>
-</DataGrid>
+@* <DataGrid TItem="UserDto" *@
+@*           Data="@Users"  *@
+@*           Filterable *@
+@*           FilterMethod="DataGridFilterMethod.StartsWith" *@
+@*           Responsive *@
+@*           Editable *@
+@*           AllowFiltering="true" *@
+@*           AllowPaging="true" *@
+@*           PageSize="@pageSize" *@
+@*           TotalItems="@totalUsers" *@
+@*           CurrentPage="@currentPage" *@
+@*           OnPageChanged="LoadData"> *@
+@* *@
+@*     <DataGridColumn TItem="UserDto" Field="FirstName" Caption="First Name"></DataGridColumn> *@
+@*     <DataGridColumn TItem="UserDto" Field="LastName" Caption="Last Name"></DataGridColumn> *@
+@*     <DataGridColumn TItem="UserDto" Field="Birthday" DisplayFormat="{0:MM/dd/yyyy}" Caption="Birthday"></DataGridColumn> *@
+@*     <DataGridColumn TItem="UserDto" Field="Gender" Caption="Gender"></DataGridColumn> *@
+@*     <DataGridCommandColumn TItem="UserDto" NewCommandAllowed="true"> *@
+@*         <EditCommandTemplate> *@
+@*             <Button Color="Color.Dark" Clicked="() => EditUser(context)"> *@
+@*                 <NavLink class="butonEdit" href="@($"/user/edit/{context.Item.Id}")">Edit</NavLink> *@
+@*             </Button> *@
+@*             <Button Color="Color.Primary" Clicked="() => AddWorkout(context)">Add Workout</Button> *@
+@*         </EditCommandTemplate> *@
+@*         <DeleteCommandTemplate> *@
+@*             <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(context)">Delete</Button> *@
+@*         </DeleteCommandTemplate> *@
+@*         <NewCommandTemplate> *@
+@*             <Button Color="Color.Dark"> *@
+@*                 <NavLink class="butonAdd" href="/user/add">Add user</NavLink> *@
+@*             </Button> *@
+@*         </NewCommandTemplate> *@
+@*     </DataGridCommandColumn> *@
+@*      *@
+@* </DataGrid> *@
+
+<div class="cards-container">
+    @foreach (var user in Users)
+    {
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@user.FirstName @user.LastName</h5>
+            <p class="card-text">Birthday: @user.Birthday.ToString("MM/dd/yyyy")</p>
+            <p class="card-text">Gender: @user.Gender</p>
+            <div class="card-buttons">
+                <Button Color="Color.Dark">
+                    <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink>
+                </Button>
+                <Button Color="Color.Primary" Clicked="() => AddWorkout(user)">Add Workout</Button>
+                <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(user)">Delete</Button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+<DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed" />
+
+<div class="pagination">
+    <Button Color="Color.Primary" Clicked="() => ChangePage(currentPage - 1)" Disabled="@IsPreviousDisabled">Previous</Button>
+    <span>Page @currentPage of @totalPages</span>
+    <Button Color="Color.Primary" Clicked="() => ChangePage(currentPage + 1)" Disabled="@IsNextDisabled">Next</Button>
+</div>
 
 
-@code {
-    [Inject]
-    public IUserRepository UserRepository { get; set; }
+
+
     
-    [Inject]
-    public NavigationManager Navigation { get; set; }
-    
-    public List<User> Users;
-        
-    protected override void OnInitialized()
-    {
-        Users = UserRepository.getUsers().ToList();
-    }
-    
-    private void EditUser(EditCommandContext<User> context)
-    {
-        if (context != null && context.Item != null)
-        {
-             string uri = $"/user/edit/{context.Item.Id}";
-            Navigation.NavigateTo($"/user/edit/{context.Item.Id}");
-        }
-    }
-}
