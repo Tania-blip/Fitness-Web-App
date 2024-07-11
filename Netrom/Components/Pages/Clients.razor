@@ -1,74 +1,126 @@
 @page "/users"
-@using Netrom.Components.Models
 
+@using Microsoft.AspNetCore.Authorization
+@* @attribute [Authorize] *@
+@* @attribute [Authorize(Roles = "Administrator")] *@
+@* @attribute [Authorize(Roles = "User")] *@
 <h2>Clients</h2>
 
-<Button Color="Color.Dark" Size="Size.Medium">
-    <NavLink class="butonAddUser" href="/user/add" >Add User</NavLink>
-</Button>
+<AuthorizeView Roles="Administrator">
+    <Authorized>
+        <Button Color="Color.Dark" Size="Size.Medium">
+            <NavLink class="buttonAddUser button-link" href="/user/add">Add User</NavLink>
+        </Button>
+    </Authorized>
+</AuthorizeView>
 
-@* <DataGrid TItem="UserDto" *@
-@*           Data="@Users"  *@
-@*           Filterable *@
-@*           FilterMethod="DataGridFilterMethod.StartsWith" *@
-@*           Responsive *@
-@*           Editable *@
-@*           AllowFiltering="true" *@
-@*           AllowPaging="true" *@
-@*           PageSize="@pageSize" *@
-@*           TotalItems="@totalUsers" *@
-@*           CurrentPage="@currentPage" *@
-@*           OnPageChanged="LoadData"> *@
-@* *@
-@*     <DataGridColumn TItem="UserDto" Field="FirstName" Caption="First Name"></DataGridColumn> *@
-@*     <DataGridColumn TItem="UserDto" Field="LastName" Caption="Last Name"></DataGridColumn> *@
-@*     <DataGridColumn TItem="UserDto" Field="Birthday" DisplayFormat="{0:MM/dd/yyyy}" Caption="Birthday"></DataGridColumn> *@
-@*     <DataGridColumn TItem="UserDto" Field="Gender" Caption="Gender"></DataGridColumn> *@
-@*     <DataGridCommandColumn TItem="UserDto" NewCommandAllowed="true"> *@
-@*         <EditCommandTemplate> *@
-@*             <Button Color="Color.Dark" Clicked="() => EditUser(context)"> *@
-@*                 <NavLink class="butonEdit" href="@($"/user/edit/{context.Item.Id}")">Edit</NavLink> *@
-@*             </Button> *@
-@*             <Button Color="Color.Primary" Clicked="() => AddWorkout(context)">Add Workout</Button> *@
-@*         </EditCommandTemplate> *@
-@*         <DeleteCommandTemplate> *@
-@*             <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(context)">Delete</Button> *@
-@*         </DeleteCommandTemplate> *@
-@*         <NewCommandTemplate> *@
-@*             <Button Color="Color.Dark"> *@
-@*                 <NavLink class="butonAdd" href="/user/add">Add user</NavLink> *@
-@*             </Button> *@
-@*         </NewCommandTemplate> *@
-@*     </DataGridCommandColumn> *@
-@*      *@
-@* </DataGrid> *@
-
-<div class="cards-container">
-    @foreach (var user in Users)
-    {
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">@user.FirstName @user.LastName</h5>
-            <p class="card-text">Birthday: @user.Birthday.ToString("MM/dd/yyyy")</p>
-            <p class="card-text">Gender: @user.Gender</p>
-            <div class="card-buttons">
-                <Button Color="Color.Dark">
-                    <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink>
-                </Button>
-                <Button Color="Color.Primary" Clicked="() => AddWorkout(user)">Add Workout</Button>
-                <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(user)">Delete</Button>
-            </div>
+<AuthorizeView>
+    <Authorized Context="another_context">
+        <div class="cards-container">
+            @foreach (var user in Users)
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@user.FirstName @user.LastName</h5>
+                        <p class="card-text">Birthday: @user.Birthday.ToString("MM/dd/yyyy")</p>
+                        <p class="card-text">Gender: @user.Gender</p>
+                        <div class="card-buttons">
+                            @* <Button Color="Color.Dark"> *@
+                            @*     <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink> *@
+                            @* </Button> *@
+                            <AuthorizeView Roles="Administrator">
+                                <Authorized>
+                                    <Button Color="Color.Secondary" Clicked="() => EditUser(user)">Edit</Button>
+                                </Authorized>
+                            </AuthorizeView>
+                            <AuthorizeView Roles="Administrator">
+                                <Authorized>
+                                    <Button Color="Color.Dark" Clicked="() => AddWorkout(user)">Add Workout</Button>
+                                </Authorized>
+                            </AuthorizeView>
+                            <Button Color="Color.Dark" Clicked="() => SeeWorkouts(user)">Show</Button>
+                            <AuthorizeView Roles="Administrator">
+                                <Authorized>
+                                    <Button Color="Color.Danger" Clicked="() => OnDeleteButtonClicked(user)">Delete</Button>
+                                </Authorized>
+                            </AuthorizeView>
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
-    </div>
-    }
-</div>
-<DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed" />
+        <DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed"/>
 
-<div class="pagination">
-    <Button Color="Color.Primary" Clicked="() => ChangePage(currentPage - 1)" Disabled="@IsPreviousDisabled">Previous</Button>
-    <span>Page @currentPage of @totalPages</span>
-    <Button Color="Color.Primary" Clicked="() => ChangePage(currentPage + 1)" Disabled="@IsNextDisabled">Next</Button>
-</div>
+        <div class="pagination">
+            <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage - 1)" Disabled="@IsPreviousDisabled">Previous</Button>
+            <span>Page @currentPage of @totalPages</span>
+            <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage + 1)" Disabled="@IsNextDisabled">Next</Button>
+        </div>
+    </Authorized>
+</AuthorizeView>
+<style>
+    .button-link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .button-link:hover {
+        color: lightgray;
+        text-decoration: none;
+    }
+
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        width: 300px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .page-info {
+        margin: 0 10px;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        margin: 0 5px;
+    }
+</style>
 
 
 

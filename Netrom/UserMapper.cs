@@ -25,7 +25,8 @@ public class UserMapper
             LastName = user.LastName,
             Birthday = user.Birthday,
             Gender = user.Gender,
-            Id = user.Id
+            Id = user.Id,
+            Email = user.Email
         };
     }
 }

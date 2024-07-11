@@ -1,0 +1,176 @@
+@* @page "/" *@
+@* @page "/login" *@
+@* @using Microsoft.AspNetCore.Authorization *@
+@* @using Microsoft.AspNetCore.Identity *@
+@* @using Netrom.Components.Models *@
+@* *@
+@* <Div Margin="Margin.IsAuto.OnX" Width="Width.Is50"> *@
+@*     <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom" TextAlignment="TextAlignment.Center"> *@
+@*         Sign in to your account *@
+@*     </Heading> *@
+@*     <EditForm Model="@loginDto"> *@
+@*         <Card Shadow="Shadow.Default"> *@
+@*             <CardBody> *@
+@*                 <Form> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Email:</label> *@
+@*                         <div> *@
+@*                             <InputText @bind-Value="loginDto.email" class="form-control col-sm-3"/> *@
+@*                             <ValidationMessage For="@(() => loginDto.email)"/> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                     <div class="form-group"> *@
+@*                         <label>Code:</label> *@
+@*                         <div> *@
+@*                             <InputText @bind-Value="loginDto.code" class="form-control col-sm-3"/> *@
+@*                             <ValidationMessage For="@(() => loginDto.code)"/> *@
+@*                         </div> *@
+@*                     </div> *@
+@*                     <Field> *@
+@*                         <Button Color="Color.Primary"  Clicked="() => SignIn()" Block> *@
+@*                             Sign in *@
+@*                         </Button> *@
+@*                     </Field> *@
+@*                 </Form> *@
+@*             </CardBody> *@
+@*         </Card> *@
+@*     </EditForm> *@
+@* *@
+@*     *@
+@* </Div> *@
+
+@page "/"
+@page "/login"
+@using Microsoft.AspNetCore.Authorization
+@using Microsoft.AspNetCore.Identity
+@using Netrom.Components.Models
+
+<Div class="login-page">
+    <Div class="background-blur"></Div> <!-- Container nou pentru fundalul cu blur -->
+    <Div class="login-container" Margin="Margin.IsAuto.OnX" Width="Width.Is50"> <!-- Container pentru formular -->
+        <Heading Size="HeadingSize.Is2" Margin="Margin.Is3.FromBottom" TextAlignment="TextAlignment.Center">
+            Sign in to your account
+        </Heading>
+        <EditForm Model="@loginDto" Class="login-form">
+            <Card Shadow="Shadow.Default">
+                <CardBody>
+                    <Form>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <InputText id="email" @bind-Value="loginDto.email" class="form-control"/>
+                            <ValidationMessage For="@(() => loginDto.email)"/>
+                        </div>
+                        <div class="form-group">
+                            <label for="code">Code:</label>
+                            <InputText id="code" @bind-Value="loginDto.code" class="form-control"/>
+                            <ValidationMessage For="@(() => loginDto.code)"/>
+                        </div>
+                        <Button Color="Color.Dark" Clicked="SignIn" Block>
+                            Sign in
+                        </Button>
+                    </Form>
+                </CardBody>
+            </Card>
+        </EditForm>
+    </Div>
+</Div>
+
+<style>
+    /*.login-page{*/
+    /*    background-image: url("https://st3.depositphotos.com/2325841/18683/i/450/depositphotos_186833344-stock-photo-sportsmen-and-sportswomen-lifting-weights.jpg");*/
+    /*    background-size: cover;*/
+    /*    background-position: center;*/
+    /*    filter: blur(8px);*/
+    /*    height: 100vh; !* Full viewport height *!*/
+    /*    display: flex;*/
+    /*    align-items: center;*/
+    /*    justify-content: center;*/
+    /*}*/
+    /*.login-form {*/
+    /*    background-color: rgba(255, 255, 255, 0.95); !* More opacity for better readability over blur *!*/
+    /*    padding: 20px;*/
+    /*    visibility: visible;*/
+    /*    border-radius: 8px;*/
+    /*    box-shadow: 0 4px 6px rgba(0,0,0,0.1);*/
+    /*    width: 100%;*/
+    /*    max-width: 400px;*/
+    /*    position: relative;*/
+    /*}*/
+    
+    /*.form-group {*/
+    /*    margin-bottom: 15px;*/
+    /*}*/
+    
+    /*.form-control {*/
+    /*    width: 100%;*/
+    /*    padding: 10px;*/
+    /*    border: 1px solid #ccc;*/
+    /*    border-radius: 5px;*/
+    /*    display: block;*/
+    /*}*/
+    
+    /*.button {*/
+    /*    background-color: #007bff;*/
+    /*    color: white;*/
+    /*    padding: 10px 15px;*/
+    /*    border: none;*/
+    /*    border-radius: 5px;*/
+    /*    cursor: pointer;*/
+    /*    width: 100%;*/
+    /*    font-size: 16px;*/
+    /*}*/
+    
+    /*.button:hover {*/
+    /*    background-color: #0056b3;*/
+    /*}*/
+    
+    /*.card {*/
+    /*    box-shadow: 0 2px 4px rgba(0,0,0,.2);*/
+    /*    border-radius: 8px;*/
+    /*    overflow: hidden;*/
+    /*}*/
+    
+    /*.card-body {*/
+    /*    padding: 20px;*/
+    /*    background-color: #f8f9fa;*/
+    /*}*/
+    
+    /*.heading {*/
+    /*    text-align: center;*/
+    /*    margin-bottom: 30px;*/
+    /*}*/
+    .login-page{
+        position: relative;
+        height: 100vh; /* Înălțimea completă a viewport-ului */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .background-blur{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image: url("https://st3.depositphotos.com/2325841/18683/i/450/depositphotos_186833344-stock-photo-sportsmen-and-sportswomen-lifting-weights.jpg");
+        background-size: cover;
+        background-position: center;
+        filter: blur(8px);
+        z-index: -1; /* Se asigură că fundalul rămâne în spate */
+    }
+
+    .login-container {
+        position: relative;
+        z-index: 1; /* Se asigură că containerul de login este deasupra fundalului blurat */
+        width: 100%;
+        max-width: 400px;
+        background-color: rgba(255, 255, 255, 0.95); /* Fundal semitransparent pentru formular */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    
+
+</style>

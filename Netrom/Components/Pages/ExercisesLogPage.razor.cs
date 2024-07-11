@@ -9,8 +9,22 @@ public partial class ExercisesLogPage : ComponentBase
     [Inject]
     public IExerciseLogRepository ExerciseLogRepository { get; set; }
     public List<ExerciseLog> ExerciseLogList;
+    
+    [Parameter]
+    public int workoutId { get; set; }
+    
     protected override void OnInitialized()
     {
-       ExerciseLogList = ExerciseLogRepository.getExerciseLogs().ToList();
+        if (workoutId == 0)
+        {
+            ExerciseLogList = ExerciseLogRepository.getExerciseLogs().ToList();
+        }
+        else
+        {
+            ExerciseLogList = ExerciseLogRepository.getExerciseLogsForWorkout(workoutId).ToList();
+        }
+        
+       
     }
+    
 }

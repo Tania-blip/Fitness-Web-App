@@ -15,7 +15,10 @@ public class ExerciseLogRepository : IExerciseLogRepository
     }
     public ICollection<ExerciseLog> getExerciseLogs()
     {
-        var exerciseLogs = _context.ExercisesLogs.Include(x=>x.Exercises).ToList();
+        var exerciseLogs = _context.ExercisesLogs
+            .Include(x=>x.Exercises)
+            .Include(l => l.Workouts)
+            .ToList();
         
         return exerciseLogs;
     }
@@ -24,5 +27,13 @@ public class ExerciseLogRepository : IExerciseLogRepository
     {
         _context.ExercisesLogs.Add(exerciseLog);
         await _context.SaveChangesAsync();
+    }
+
+    public ICollection<ExerciseLog> getExerciseLogsForWorkout(int WorkoutId)
+    {
+        return _context.ExercisesLogs
+            .Include(l => l.Workouts)
+            .Include(x=>x.Exercises).Where(log => log.WorkoutId == WorkoutId).ToList();
+        
     }
 }

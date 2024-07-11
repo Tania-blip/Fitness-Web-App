@@ -1,24 +1,108 @@
 @page "/workouts"
+@using Microsoft.AspNetCore.Authorization
 @using Netrom.Repositories.Interfaces
-
+@page "/workouts/{UserId:int}"
+@attribute [Authorize(Roles = "Administrator,User")]
 <h3>Workouts</h3>
 
-<Button Color="Color.Dark" Size="Size.Medium">
-    <NavLink class="butonAddWorkout" href="/addWorkout" >Add Workout</NavLink>
-</Button>
+<AuthorizeView>
+    <Authorized Context="another_context">
+    <div class="cards-container">
+        @foreach (var workout in WorkoutList)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@workout.Name</h5>
+                    <p class="card-text">Date: @workout.Date </p>
+                    <p class="card-text">User's first name: @workout.User.FirstName </p>
+                    <p class="card-text">User's last name: @workout.User.LastName </p>
+                    @if (workout.ExercisesLogs != null)
+                    {
+                        foreach (var exerciseLog in workout.ExercisesLogs)
+                        {
+                            <p class="card-text">@exerciseLog.Exercises.Description </p>
+                            <p class="card-text">@exerciseLog.Exercises.Type </p>
+                            <p class="card-text">@exerciseLog.Duration </p>
+                        }
+                    }
+                    
+                    
+                    <div class="card-buttons">
+                        @* <Button Color="Color.Dark"> *@
+                        @*     <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink> *@
+                        @* </Button> *@
+                        <AuthorizeView Roles="Administrator">
+                            <Authorized>
+                                <Button Color="Color.Secondary" Clicked="() => AddExerciseLog(workout)">Add Exercise Log</Button>
+                                <Button Color="Color.Danger" Clicked="() => OnDeleteButtonClicked(workout)">Delete</Button>
+                            </Authorized>
+                        </AuthorizeView>
+                    </div>
+                </div>
+            </div>
 
-<DataGrid TItem = "Workout"
-          Data = "@Workout"
-          Filterable
-          Editable
-          FilterMethod="DataGridFilterMethod.StartsWith"
-          Responsive>
+        }
+    </div>
+    <DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed"/>
 
-    <DataGridColumn TItem="Workout" Field="Name" Caption="Name"></DataGridColumn>
-    <DataGridColumn TItem="Workout" Field="Date" Caption="Date"></DataGridColumn>
-    <DataGridCommandColumn NewCommandAllowed="true" TItem="Workout">
-        <EditCommandTemplate>
-            <Button Color="Color.Primary" Clicked="() => AddExerciseLog(context)">Add Exercise Log</Button>
-        </EditCommandTemplate>
-    </DataGridCommandColumn>
-</DataGrid>
+    <div class="pagination">
+        <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage - 1)" Disabled="@IsPreviousDisabled">Previous</Button>
+        <span>Page @currentPage of @totalPages</span>
+        <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage + 1)" Disabled="@IsNextDisabled">Next</Button>
+    </div>
+    </Authorized>
+</AuthorizeView>
+
+<style>
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        width: 300px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .page-info {
+        margin: 0 10px;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        margin: 0 5px;
+    }
+</style>

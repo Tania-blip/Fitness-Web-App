@@ -13,4 +13,6 @@ public interface IUserRepository
     //Task DeleteUser(int? id);
     void DeleteUser(int id);
     Task<(IEnumerable<UserDto> Users, int TotalCount)> GetUsersAsync(int pageIndex, int pageSize);
+
+    public User getUserByEmail(string? Email);
 }

@@ -1,7 +1,10 @@
 @using Blazornetrom.Entites
+@using Microsoft.AspNetCore.Authorization
 @page "/exercisesLog"
-<h3>ExercisesLogPage</h3>
+@attribute [Authorize(Roles = "Administrator")]
+@page "/exerciseLog/{WorkoutId:int}"
 
+<h3>ExercisesLogPage</h3>
 
 <Button Color="Color.Dark" Size="Size.Medium">
     <NavLink class="butonAddUser" href="/exerciseLog/add" >Add Exercise Log</NavLink>
@@ -12,10 +15,9 @@
           Filterable
           FilterMethod="DataGridFilterMethod.StartsWith"
           Responsive>
-    
+
+    <DataGridColumn TItem="ExerciseLog" Field="Workouts.Name" Caption="Workout Name"></DataGridColumn>
     <DataGridColumn TItem="ExerciseLog" Field="Reps" Caption="Reps"></DataGridColumn>
     <DataGridColumn TItem="ExerciseLog" Field="Duration" Caption="Duration"></DataGridColumn>
-    <DataGridColumn TItem="ExerciseLog" Field="ExerciseId" Caption="ExerciseId"></DataGridColumn>
-    <DataGridColumn TItem="ExerciseLog" Field="WorkoutId" Caption="WorkoutId"></DataGridColumn>
     <DataGridColumn TItem="ExerciseLog" Field="Exercises.Description" Caption="Exercise Name"></DataGridColumn>
 </DataGrid>

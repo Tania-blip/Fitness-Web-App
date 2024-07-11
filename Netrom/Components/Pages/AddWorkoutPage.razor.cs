@@ -13,6 +13,10 @@ public partial class AddWorkoutPage : ComponentBase
     [Inject]
     public IUserRepository UserRepository { get; set; }
 
+    [SupplyParameterFromForm]
+    
+    public WorkoutDto WorkoutDto { get; set; } = new WorkoutDto();
+    
     [Parameter]
     public int UserId { get; set; }
     
@@ -31,6 +35,6 @@ public partial class AddWorkoutPage : ComponentBase
     {
         Workout.UserId = UserId;
         await WorkoutRepository.AddAsync(Workout);
-        Navigation.NavigateTo("/workouts");
+        Navigation.NavigateTo($"/workouts/{UserId}");
     }
 }

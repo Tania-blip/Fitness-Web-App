@@ -1,34 +1,103 @@
 @page "/exercises"
+@using Microsoft.AspNetCore.Authorization
 @using Netrom.Components.Models
 @using Netrom.Repositories.Interfaces
-
+@attribute [Authorize(Roles = "Administrator")]
 <h3>Exercises</h3>
 
-@* <Button Color="Color.Dark" Size="Size.Medium"> *@
-@*     <NavLink class="butonAddExercise" href="exercise/add">Add Exercise</NavLink> *@
-@* </Button> *@
+<Button Color="Color.Dark" Size="Size.Medium">
+    <NavLink class="buttonAddExercise button-link" href="exercise/add">Add Exercise</NavLink>
+</Button>
 
-<DataGrid TItem = "ExerciseDto"
-          Data = "ExercisesList"
-          Editable
-          Filterable
-          FilterMethod="DataGridFilterMethod.StartsWith"
-          Responsive>
-    
-    <DataGridColumn TItem="ExerciseDto" Field="Description" Caption="Description"></DataGridColumn>
-    <DataGridColumn TItem="ExerciseDto" Field="Type" Caption="Type"></DataGridColumn>
-    <DataGridCommandColumn TItem="ExerciseDto">
-        <EditCommandTemplate>
-            <Button Color="Color.Danger" Clicked="() => EditExercise(context)">
-                Edit
-            </Button>
-        </EditCommandTemplate>
-        <DeleteCommandTemplate>
-            <Button Color="Color.Primary" Clicked="() => OnDeleteButtonClicked(context)">Delete</Button>
-        </DeleteCommandTemplate>
-    </DataGridCommandColumn>
-</DataGrid>
-
+<div class="cards-container">
+    @foreach (var exercise in ExercisesList)
+    {
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">@exercise.Description</h5>
+            <p class="card-text">Exercise type: @exercise.Type </p>
+            <div class="card-buttons">
+                @* <Button Color="Color.Dark"> *@
+                @*     <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink> *@
+                @* </Button> *@
+                <AuthorizeView Roles="Administrator">
+                    <Authorized>
+                        <Button Color="Color.Secondary" Clicked="() => EditExercise(exercise)">Edit</Button>
+                        <Button Color="Color.Danger" Clicked="() => OnDeleteButtonClicked(exercise)">Delete</Button>
+                    </Authorized>
+                </AuthorizeView>
+            </div>
+        </div>
+    </div>
+    }
+</div>
 <DeleteConfirmationDialog @ref="DeleteConfirmation" OnConfirm="HandleDeleteConfirmed" />
 
+<div class="pagination">
+    <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage - 1)" Disabled="@IsPreviousDisabled">Previous</Button>
+    <span>Page @currentPage of @totalPages</span>
+    <Button Color="Color.Dark" Clicked="() => ChangePage(currentPage + 1)" Disabled="@IsNextDisabled">Next</Button>
+</div>
 
+<style>
+    .button-link {
+        color: white;
+        text-decoration: none;
+    }
+
+    .button-link:hover {
+        color: lightgray;
+        text-decoration: none;
+    }
+    .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .card {
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin: 10px;
+        width: 300px;
+    }
+
+    .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+    }
+
+    .card-buttons {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 20px;
+    }
+
+    .page-info {
+        margin: 0 10px;
+        font-weight: bold;
+        font-size: 1.2em;
+        color: #333;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        margin: 0 5px;
+    }
+</style>

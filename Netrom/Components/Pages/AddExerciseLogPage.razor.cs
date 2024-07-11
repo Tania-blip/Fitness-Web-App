@@ -25,21 +25,24 @@ public partial class AddExerciseLogPage : ComponentBase
     
     [Parameter]
     public int workoutId { get; set; }
+    
+    
    //public int exerciseId { get; set; }
     public async Task SaveExerciseLog()
     {
-        // await exerciseLogRepository.Add(ExerciseLog);
-        // Navigation.NavigateTo("/workouts");
         if (ExercisesList.Any(x => x.Id == ExerciseLog.ExerciseId))
         {
             await exerciseLogRepository.Add(ExerciseLog);
-            Navigation.NavigateTo("/workouts");
+                //verificare pt UseId
+                //mergi la exLog pt userul x
+                
+            Navigation.NavigateTo($"/exerciseLog/{workoutId}");
         }
         else
         {
-            // Manage error, e.g., show an error message or log it.
             Console.WriteLine("Invalid Exercise ID");
         }
+        
             
     }
 
@@ -50,7 +53,7 @@ public partial class AddExerciseLogPage : ComponentBase
         {
             throw new InvalidOperationException("No exercises available.");
         }
-        // Debugging to verify that the list is correctly populated
+       
         foreach (var exercise in ExercisesList)
         {
             Console.WriteLine($"Exercise ID: {exercise.Id}, Description: {exercise.Description}");
@@ -62,7 +65,7 @@ public partial class AddExerciseLogPage : ComponentBase
     {
         
         ExercisesList = exerciseRepository.getExercises().ToList();
-        ExerciseLog.WorkoutId = workoutId;  // Asigură-te că acesta este setat corect
+        ExerciseLog.WorkoutId = workoutId; 
     }
 
 

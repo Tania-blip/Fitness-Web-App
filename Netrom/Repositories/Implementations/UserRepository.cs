@@ -29,7 +29,8 @@ public class UserRepository : IUserRepository
             FirstName = userDto.FirstName,
             Birthday = userDto.Birthday,
             LastName = userDto.LastName,
-            Gender = userDto.Gender
+            Gender = userDto.Gender,
+            Email = userDto.Email
         };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -45,6 +46,7 @@ public class UserRepository : IUserRepository
             userToUpdate.LastName = user.LastName;
             userToUpdate.Birthday = user.Birthday;
             userToUpdate.Gender = user.Gender;
+            userToUpdate.Email = user.Email;
             _context.Users.Update(userToUpdate);
             _context.SaveChanges();
 
@@ -75,6 +77,7 @@ public class UserRepository : IUserRepository
         userDto.Birthday = user.Birthday;
         userDto.LastName = user.LastName;
         userDto.Gender = user.Gender;
+        userDto.Email = user.Email;
         
         return userDto;
     }
@@ -100,10 +103,23 @@ public class UserRepository : IUserRepository
             FirstName = user.FirstName,
             LastName = user.LastName,
             Birthday = user.Birthday,
-            Gender = user.Gender
+            Gender = user.Gender,
+            Email = user.Email
         }).ToList();
 
         return (userDtos, totalCount);
+    }
+
+    public User getUserByEmail(string? Email)
+    {
+        var user = _context.Users.FirstOrDefault(u => u.Email == Email);
+
+        if (user == null)
+        {
+            return null;
+        }
+
+        return user;
     }
 
 }

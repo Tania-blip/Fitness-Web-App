@@ -1,6 +1,78 @@
-﻿<Router AppAssembly="typeof(Program).Assembly">
-    <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
-        <FocusOnNavigate RouteData="routeData" Selector="h1" />
-    </Found>
-</Router>
+﻿@* *@
+@* *@
+@* <CascadingAuthenticationState> *@
+@*     <Router AppAssembly="@typeof(App).Assembly"> *@
+@*         <Found Context="routeData"> *@
+@*             <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)"> *@
+@*                 <NotAuthorized> *@
+@*                     You are not authorized (This is a custom message) *@
+@*                 </NotAuthorized> *@
+@*                 <Authorizing> *@
+@*                     You are getting authorized (This is a custom message) *@
+@*                 </Authorizing> *@
+@*             </AuthorizeRouteView> *@
+@*             <FocusOnNavigate RouteData="@routeData" Selector="h1" /> *@
+@*         </Found> *@
+@*         <NotFound> *@
+@*             <PageTitle>Not found</PageTitle> *@
+@*             <LayoutView Layout="@typeof(MainLayout)"> *@
+@*                 <p role="alert">Sorry, there's nothing at this address.</p> *@
+@*             </LayoutView> *@
+@*         </NotFound> *@
+@*     </Router> *@
+@* </CascadingAuthenticationState> *@
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(App).Assembly">
+        <Found Context="routeData">
+            <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
+                <NotAuthorized>
+                    @* <div class="not-authorized-container"> *@
+                    @*     <h3>Access Denied</h3> *@
+                    @*     <p>You do not have permission to view this page. Please contact support if you think this is a mistake.</p> *@
+                    @* </div> *@
+                    <div class="not-authorized-container">
+                        <h3><i class="fas fa-ban"></i> Access Denied</h3>
+                        <p>You do not have permission to view this page. Please contact support if you think this is a mistake.</p>
+                    </div>
+
+                </NotAuthorized>
+                <Authorizing>
+                    <div class="authorizing-container">
+                        <h3>Authorization in Progress</h3>
+                        <p>Please wait while we confirm your credentials.</p>
+                    </div>
+                </Authorizing>
+            </AuthorizeRouteView>
+            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+        </Found>
+        <NotFound>
+            <PageTitle>Not found</PageTitle>
+            <LayoutView Layout="@typeof(MainLayout)">
+                <div class="not-found-container">
+                    <h3>Page Not Found</h3>
+                    <p>Sorry, there's nothing at this address. Please check the URL or go back to the homepage.</p>
+                </div>
+            </LayoutView>
+        </NotFound>
+    </Router>
+</CascadingAuthenticationState>
+
+<style>
+    .not-authorized-container, .authorizing-container, .not-found-container {
+        border: 1px solid #dc3545; /* Red border for emphasis */
+        background-color: #fff3f3; /* Light red background */
+        padding: 20px;
+        border-radius: 5px;
+        margin: 20px;
+    }
+
+    .not-authorized-container h3, .authorizing-container h3, .not-found-container h3 {
+        color: #dc3545;
+    }
+
+    .not-authorized-container p, .authorizing-container p, .not-found-container p {
+        color: #212529; /* Dark grey text for readability */
+    }
+
+</style>

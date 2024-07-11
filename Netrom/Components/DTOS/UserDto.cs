@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.CompilerServices;
 using Netrom.Entities;
 
 namespace Netrom.Components.Models;
@@ -19,6 +20,13 @@ public class UserDto
     [Required(ErrorMessage = "Gender is required")]
     [StringLength(1, MinimumLength = 1)]
     public string Gender { get; set; }
-
     public bool Exists { get; set; } = true;
+    
+    [Required]
+    [DataType(DataType.EmailAddress)]
+    [EmailAddress]
+    
+    public string? Email { get; set; }
+    [Required]
+    public bool IsTrainer { get; set; }
 }

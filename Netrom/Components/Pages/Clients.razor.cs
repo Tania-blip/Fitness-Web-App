@@ -20,26 +20,16 @@ public partial class Clients : ComponentBase
         Users = UserRepository.getUsers().ToList();
     }
     
-    private void EditUser(EditCommandContext<UserDto> context)
+    private void EditUser(UserDto context)
     {
-        if (context != null && context.Item != null)
+        if (context != null)
         {
-            Navigation.NavigateTo($"/user/edit/{context.Item.Id}");
+            Navigation.NavigateTo($"/user/edit/{context.Id}");
         }
     }
+    
     private UserDto SelectedUser;
     private DeleteConfirmationDialog DeleteConfirmation;
-    
-    // private void OnDeleteButtonClicked(CommandContext<UserDto?> context)
-    // {
-    //     SelectedUser = context.Item;
-    //     if (DeleteConfirmation is null || SelectedUser is null)
-    //     {
-    //         return;
-    //     }
-    //
-    //     DeleteConfirmation.Show();
-    // }
     
     private void OnDeleteButtonClicked(UserDto? context)
     {
@@ -60,12 +50,6 @@ public partial class Clients : ComponentBase
             OnInitialized();
         }  
     }
-
-    // public void AddWorkout(EditCommandContext<UserDto> context)
-    // {
-    //     Navigation.NavigateTo($"/addWorkout/{context.Item.Id}");
-    //     
-    // }
     
     public void AddWorkout(UserDto context)
     {
@@ -76,7 +60,7 @@ public partial class Clients : ComponentBase
     private List<UserDto> UserList = new List<UserDto>();
     private int totalUsers;
     private int currentPage = 1;
-    private int pageSize = 5;
+    private int pageSize = 6;
     private int totalPages => (int)Math.Ceiling((double)totalUsers / pageSize);
     protected override async Task OnInitializedAsync()
     {
@@ -101,4 +85,17 @@ public partial class Clients : ComponentBase
 
     private bool IsPreviousDisabled => currentPage <= 1;
     private bool IsNextDisabled => currentPage >= totalPages;
+
+    public void SeeWorkouts(UserDto context)
+    {
+        if (context.Id == null)
+        {
+            //nu are param deci navigate la workouts
+            return;
+        }
+        else
+        {
+            Navigation.NavigateTo($"/workouts/{context.Id}");
+        }
+    }
 }

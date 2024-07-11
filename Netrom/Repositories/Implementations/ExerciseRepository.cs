@@ -1,4 +1,5 @@
 using Blazornetrom.Context;
+using Microsoft.EntityFrameworkCore;
 using Netrom.Components.Models;
 using Netrom.Entities;
 using Netrom.Repositories.Interfaces;
@@ -90,5 +91,20 @@ public class ExerciseRepository : IExerciseRepository
             _context.Exercises.Remove(existingExercise);
             _context.SaveChanges();
         }
+    }
+    
+    public async Task<(IEnumerable<ExerciseDto> Exercises, int TotalCount)> GetExerciseAsync(int pageIndex, int pageSize)
+    {
+        var query = _context.Exercises.AsQueryable();
+        var totalCount = await query.CountAsync();
+        var exercises = await query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
+        var exerciseDtos = exercises.Select(exercise => new ExerciseDto()
+        {
+            Id = exercise.Id,
+            Type = exercise.Type,
+            Description = exercise.Description
+        }).ToList();
+
+        return (exerciseDtos, totalCount);
     }
 }
