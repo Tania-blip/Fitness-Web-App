@@ -4,7 +4,7 @@
 @* @attribute [Authorize] *@
 @* @attribute [Authorize(Roles = "Administrator")] *@
 @* @attribute [Authorize(Roles = "User")] *@
-<h2>Clients</h2>
+<h2>Users</h2>
 
 <AuthorizeView Roles="Administrator">
     <Authorized>
@@ -24,6 +24,7 @@
                         <h5 class="card-title">@user.FirstName @user.LastName</h5>
                         <p class="card-text">Birthday: @user.Birthday.ToString("MM/dd/yyyy")</p>
                         <p class="card-text">Gender: @user.Gender</p>
+                        <p class="card-text">Email: @user.Email</p>
                         <div class="card-buttons">
                             @* <Button Color="Color.Dark"> *@
                             @*     <NavLink class="butonEdit" href="@($"/user/edit/{user.Id}")">Edit</NavLink> *@
@@ -74,6 +75,7 @@
         flex-wrap: wrap;
         justify-content: center;
         margin-top: 20px;
+        
     }
 
     .card {
@@ -107,6 +109,8 @@
         justify-content: center;
         align-items: center;
         margin-top: 20px;
+        background-color: grey;
+        backdrop-filter: blur(8px);
     }
 
     .page-info {
@@ -119,6 +123,20 @@
     .pagination button {
         padding: 5px 10px;
         margin: 0 5px;
+    }
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .card-title {
+        font-size: 1.4em;
+        color: #0056b3;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
     }
 </style>
 

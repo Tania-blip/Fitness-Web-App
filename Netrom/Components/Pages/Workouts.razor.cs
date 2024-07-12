@@ -65,7 +65,7 @@ public partial class Workouts : ComponentBase
     
     private int totalWorkouts;
     private int currentPage = 1;
-    private int pageSize = 9;
+    private int pageSize = 4;
     private int totalPages => (int)Math.Ceiling((double)totalWorkouts / pageSize);
     
     public List<Workout> WorkoutList = new List<Workout>();

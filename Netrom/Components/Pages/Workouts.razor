@@ -3,7 +3,8 @@
 @using Netrom.Repositories.Interfaces
 @page "/workouts/{UserId:int}"
 @attribute [Authorize(Roles = "Administrator,User")]
-<h3>Workouts</h3>
+
+<h2>Workouts</h2>
 
 <AuthorizeView>
     <Authorized Context="another_context">
@@ -18,12 +19,18 @@
                     <p class="card-text">User's last name: @workout.User.LastName </p>
                     @if (workout.ExercisesLogs != null)
                     {
+                        int i = 1;
+                        int duration = 0;
                         foreach (var exerciseLog in workout.ExercisesLogs)
                         {
-                            <p class="card-text">@exerciseLog.Exercises.Description </p>
-                            <p class="card-text">@exerciseLog.Exercises.Type </p>
-                            <p class="card-text">@exerciseLog.Duration </p>
+                            <p class="card-text" style="background-color: yellow; color: black;">Details for exercise number @i </p>
+                            <p class="card-text">Exercise Description: @exerciseLog.Exercises.Description </p>
+                            <p class="card-text">Exercise Type: @exerciseLog.Exercises.Type </p>
+                            <p class="card-text">Duration: @exerciseLog.Duration mintes</p>
+                            duration += @exerciseLog.Duration;
+                            i++;
                         }
+                        <p class="card-text">Workout duration: @duration mintes</p>
                     }
                     
                     
@@ -54,55 +61,98 @@
 </AuthorizeView>
 
 <style>
-    .cards-container {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 20px;
-    }
-
-    .card {
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        margin: 10px;
-        width: 300px;
-    }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-title {
-        font-size: 1.2em;
-        margin-bottom: 10px;
-    }
-
-    .card-text {
-        margin-bottom: 10px;
-    }
-
-    .card-buttons {
-        display: flex;
-        justify-content: space-between;
-    }
-
+    /*.cards-container {*/
+    /*    display: flex;*/
+    /*    flex-wrap: wrap;*/
+    /*    justify-content: center;*/
+    /*    margin-top: 20px;*/
+    /*}*/
+    
+    /*.card {*/
+    /*    border: 1px solid #ccc;*/
+    /*    border-radius: 8px;*/
+    /*    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);*/
+    /*    margin: 10px;*/
+    /*    width: 300px;*/
+    /*}*/
+    
+    /*.card-body {*/
+    /*    padding: 15px;*/
+    /*}*/
+    
+    /*.card-title {*/
+    /*    font-size: 1.2em;*/
+    /*    margin-bottom: 10px;*/
+    /*}*/
+    
+    /*.card-text {*/
+    /*    margin-bottom: 10px;*/
+    /*}*/
+    
+    /*.card-buttons {*/
+    /*    display: flex;*/
+    /*    justify-content: space-between;*/
+    /*}*/
+    
     .pagination {
         display: flex;
         justify-content: center;
         align-items: center;
         margin-top: 20px;
     }
-
-    .page-info {
-        margin: 0 10px;
-        font-weight: bold;
-        font-size: 1.2em;
-        color: #333;
-    }
-
+    
+    /*.page-info {*/
+    /*    margin: 0 10px;*/
+    /*    font-weight: bold;*/
+    /*    font-size: 1.2em;*/
+    /*    color: #333;*/
+    /*}*/
+    
     .pagination button {
         padding: 5px 10px;
         margin: 0 5px;
     }
+    .cards-container {
+        display: flex;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
+
+    .button {
+        background-color: #007bff; /* Bootstrap primary color */
+        color: white;
+        border-radius: 4px;
+        padding: 8px 16px;
+        transition: background-color 0.3s;
+    }
+
+    .button:hover {
+        background-color: #0056b3;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .card-title {
+        font-size: 1.4em;
+        color: #0056b3; /* A nice blue for titles */
+    }
+
+
 </style>

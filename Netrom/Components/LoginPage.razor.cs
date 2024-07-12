@@ -26,6 +26,7 @@ public partial class LoginPage : ComponentBase
 
     [SupplyParameterFromForm] public LoginDto loginDto { get; set; } = new LoginDto();
     
+    public string ErrorMessage { get; set; }
 
     public void SignIn()
     {
@@ -36,6 +37,7 @@ public partial class LoginPage : ComponentBase
         }
         catch (Exception e)
         {
+            ErrorMessage = "Failed to sign in: " + e.Message;
             Console.WriteLine(e);
         }
     }
